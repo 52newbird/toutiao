@@ -1,3 +1,6 @@
-body {
-  background-color: pink;
+/* 在线链接服务仅供平台体验和调试使用，平台不承诺服务的稳定性，企业客户需下载字体包自行发布使用并做好备份。 */
+@font-face {
+  font-family: 'iconfont';
+  /* Project id 4140455 */
+  src: url('//at.alicdn.com/t/c/font_4140455_cx76rlwghdr.woff2?t=1687850268842') format('woff2'), url('//at.alicdn.com/t/c/font_4140455_cx76rlwghdr.woff?t=1687850268842') format('woff'), url('//at.alicdn.com/t/c/font_4140455_cx76rlwghdr.ttf?t=1687850268842') format('truetype');
 }
