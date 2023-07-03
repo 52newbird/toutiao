@@ -1,7 +1,9 @@
 <template>
   <div class="login-container">
     <!-- 导航栏 -->
-    <van-nav-bar class="page-nav-bar" title="登录" />
+    <van-nav-bar class="page-nav-bar" title="登录">
+      <van-icon slot="left" name="cross" @click="$router.back()"></van-icon>
+    </van-nav-bar>
     <!-- /导航栏 -->
 
     <!-- 登录表单 -->
@@ -14,7 +16,7 @@
         maxlength="11"
         type="number"
       >
-        <i slot="left-icon" class="toutiao toutiao-shouji"></i>
+        <i slot="left-icon" class="iconfont icon-shouji"></i>
       </van-field>
       <van-field
         v-model="user.code"
@@ -24,7 +26,7 @@
         maxlength="6"
         type="number"
       >
-        <i slot="left-icon" class="toutiao toutiao-yanzhengma"></i>
+        <i slot="left-icon" class="iconfont icon-yanzhengma"></i>
         <template #button>
           <van-count-down
             class="sortTime"
@@ -70,7 +72,7 @@ export default {
       rouler: {
         mobile: [
           { required: true, message: "请填写手机号" },
-          { pattern: /1[3|5|8|6]\d{9}/, message: "手机号格式错误" },
+          { pattern: /1[3|7|5|8|6]\d{9}/, message: "手机号格式错误" },
         ],
         yz: [
           { required: true, message: "请填写验证码" },
@@ -87,7 +89,7 @@ export default {
   methods: {
     async onSubmit() {
       // 1. 获取表单数据
-      const user = this.user;
+      // const user = this.user;
 
       // TODO: 2. 表单验证
       this.$toast.loading({
@@ -97,12 +99,13 @@ export default {
       });
       // 3. 提交表单请求登录
       try {
-       const {data} =  await login(user);
+       const {data} =  await login(this.user);
         // console.log("登录成功", res);
         //存储用户token
         this.$store.commit("upData",data.data)
         //轻提示
         this.$toast.success("登录成功");
+        this.$router.back()
       } catch (err) {
         if (err.response.status === 400) {
           // console.log("手机号或验证码错误");
@@ -123,20 +126,22 @@ export default {
       } catch (err) {
         return console.log("验证失败", err);
       }
+      //验证通过验证码运行
       this.isShow = true;
+      //发送验证码请求
       try {
         //调用接口发送短信 传递用户手机号
-        const res = await sendSms(this.user.mobile);
+        await sendSms(this.user.mobile);
         // console.log("发送成功",res);
-        this.$toast("发送成功",res);
+        this.$toast("发送成功");
       } catch (err) {
         //发送失败关闭倒计时
-        this.$isShow = false;
         //if判断60秒内发送次数
+        this.isShow = false;
         if(err.response.status ===429){
-          this.$toast("发送的太频繁啦,请稍后再试")
+          this.$toast("发送太频繁啦,请稍后再试")
         }
-        this.$toast("发送失败");
+        this.$toast("发送失败,请稍后重试");
       }
     },
   },
@@ -145,16 +150,16 @@ export default {
 
 <style scoped lang="less">
 .login-container {
-  .toutiao {
+  .iconfont {
     font-size: 25px;
   }
 
   .send-sms-btn {
-    width: 120px;
-    height: 35px;
-    line-height: 35px;
+    width: 200px;
+    height: 45px;
+    line-height: 45px;
     background-color: #ededed;
-    font-size: 18px;
+    font-size:24px;
     color: #666;
   }
 
@@ -166,13 +171,13 @@ export default {
     }
   }
 }
-.sortTime {
-  width: 60px;
-  height: 35px;
-  line-height: 35px;
-  text-align: center;
-  // padding-left: 25px;
-  color: hsl(0, 1%, 43%);
-  font-size: 16px;
-}
+// .sortTime {
+//   width: 60px;
+//   height: 35px;
+//   line-height: 35px;
+//   text-align: center;
+//   // padding-left: 25px;
+//   color: hsl(0, 1%, 43%);
+//   font-size: 16px;
+// }
 </style>
