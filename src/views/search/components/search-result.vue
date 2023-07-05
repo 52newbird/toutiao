@@ -53,9 +53,9 @@ export default {
           q: this.searchText // 查询关键词
         })
 
-        if (Math.random() > 0.5) {
-          JSON.parse('dsnajndjsa')
-        }
+        // if (Math.random() > 0.5) {
+        //   JSON.parse('dsnajndjsa')
+        // }
 
         // 2. 将数据添加到数组列表中
         const { results } = data.data

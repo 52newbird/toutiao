@@ -1,9 +1,9 @@
 <template>
   <div class="search-history">
     <van-cell title="搜索历史">
-      <span>全部删除</span>
-      <span>完成</span>
-      <van-icon name="delete" />
+      <span v-if="dorb" >全部删除</span>
+      <span v-if="dorb" @click="dorb = !dorb">完成</span>
+      <van-icon v-else @click="dorb=!dorb" name="delete" />
     </van-cell>
     <van-cell title="hello">
       <van-icon name="close" />
@@ -26,7 +26,9 @@ export default {
   components: {},
   props: {},
   data () {
-    return {}
+    return {
+      dorb:false
+    }
   },
   computed: {},
   watch: {},
